@@ -1,19 +1,25 @@
 import logger from '@src/utils/logger';
+import { redisClient } from '@src/utils/redis';
 import HttpResponse from '@src/utils/response';
 import type { NextFunction, Request, Response } from 'express';
-import { RateLimiterMemory, RateLimiterRes } from 'rate-limiter-flexible';
+import { RateLimiterRes, RateLimiterRedis, IRateLimiterRedisOptions } from 'rate-limiter-flexible';
 
-const rateLimiter = new RateLimiterMemory({
-  points: 30, // limit each ip for 15 request per 1 minute
-  duration: 60 // 1 minute
-});
+const options: IRateLimiterRedisOptions = {
+  storeClient: redisClient,
+  useRedisPackage: true,
+  points: 15, // limit each ip for 15 request per 1 minute
+  duration: 60
+};
+
+const rateLimiterRedis = new RateLimiterRedis(options);
 
 const rateLimiterMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const rateLimiterRes = await rateLimiter.consume(req.ip as string);
+    await redisClient.connect();
+    const rateLimiterRes = await rateLimiterRedis.consume(req.ip as string);
     const headers = {
       'Retry-After': rateLimiterRes.msBeforeNext / 1000,
-      'X-RateLimit-Limit': rateLimiter.points,
+      'X-RateLimit-Limit': rateLimiterRedis.points,
       'X-RateLimit-Remaining': rateLimiterRes.remainingPoints,
       'X-RateLimit-Reset': new Date(Date.now() + rateLimiterRes.msBeforeNext)
     };
@@ -24,7 +30,7 @@ const rateLimiterMiddleware = async (req: Request, res: Response, next: NextFunc
     if (err instanceof RateLimiterRes) {
       const headers = {
         'Retry-After': err.msBeforeNext / 1000,
-        'X-RateLimit-Limit': rateLimiter.points,
+        'X-RateLimit-Limit': rateLimiterRedis.points,
         'X-RateLimit-Remaining': err.remainingPoints,
         'X-RateLimit-Reset': new Date(Date.now() + err.msBeforeNext)
       };
@@ -34,6 +40,8 @@ const rateLimiterMiddleware = async (req: Request, res: Response, next: NextFunc
         message: 'Too many request, please try again later.'
       });
     }
+  } finally {
+    await redisClient.disconnect();
   }
 };
 

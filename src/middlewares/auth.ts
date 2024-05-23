@@ -1,6 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import HttpResponse from '@src/utils/response';
-import logger from '@src/utils/logger';
 import ResponseError from '@src/error';
 import jwt from 'jsonwebtoken';
 import env from '@config/index';
@@ -32,8 +30,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
     res.locals.session = JSON.parse(session) as User;
     next();
   } catch (err: any) {
-    logger.error(err);
-    HttpResponse.error(res, err);
+    next(err);
   }
 };
 

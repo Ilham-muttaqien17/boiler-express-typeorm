@@ -1,7 +1,7 @@
 import env from '@config/index';
 import { createClient } from 'redis';
 
-const redisClient = createClient({
+export const redisClient = createClient({
   socket: {
     host: env.REDIS_HOST,
     port: env.REDIS_PORT
