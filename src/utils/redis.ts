@@ -12,15 +12,11 @@ export const redisClient = createClient({
 
 export const useRedisClient = {
   setData: async (key: string, value: any, ex?: number) => {
-    await redisClient.connect();
     const opts = ex ? { EX: ex } : {};
     await redisClient.set(key, value, opts);
-    await redisClient.disconnect();
   },
   getData: async (key: string) => {
-    await redisClient.connect();
     const result = await redisClient.get(key);
-    await redisClient.disconnect();
     return result;
   }
 };

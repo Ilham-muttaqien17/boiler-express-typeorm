@@ -15,7 +15,6 @@ const rateLimiterRedis = new RateLimiterRedis(options);
 
 const rateLimiterMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await redisClient.connect();
     const rateLimiterRes = await rateLimiterRedis.consume(req.ip as string);
     const headers = {
       'Retry-After': rateLimiterRes.msBeforeNext / 1000,
@@ -41,7 +40,6 @@ const rateLimiterMiddleware = async (req: Request, res: Response, next: NextFunc
       });
     }
   } finally {
-    await redisClient.disconnect();
   }
 };
 
