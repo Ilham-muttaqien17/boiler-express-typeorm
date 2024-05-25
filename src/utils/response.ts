@@ -21,7 +21,7 @@ const HttpResponse = {
   error: (res: Response, err: any) => {
     if (err instanceof TokenExpiredError || err instanceof JsonWebTokenError) {
       return res.status(401).send({
-        message: 'Token is not valid'
+        message: 'Token is not valid, please sign in again'
       });
     }
 

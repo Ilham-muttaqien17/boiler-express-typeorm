@@ -1,6 +1,7 @@
 import express from 'express';
 import type { NextFunction, Request, Response, Errback } from 'express';
 import helmet from 'helmet';
+import cors from 'cors';
 import limiter from '@src/middlewares/rate-limiter';
 import sanitizer from '@src/middlewares/sanitizer';
 import routes from '@src/routes';
@@ -23,6 +24,14 @@ app.use(helmet());
 
 /* Sanitize request data */
 app.use(sanitizer);
+
+/* Configure CORS */
+app.use(
+  cors({
+    origin: ['*'],
+    optionsSuccessStatus: 200
+  })
+);
 
 /* Static directory */
 app.use('/public', express.static('uploads'));
