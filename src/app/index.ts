@@ -28,7 +28,7 @@ app.use(sanitizer);
 /* Configure CORS */
 app.use(
   cors({
-    origin: ['*'],
+    origin: '*',
     optionsSuccessStatus: 200
   })
 );
