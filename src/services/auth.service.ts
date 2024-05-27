@@ -110,7 +110,11 @@ async function login(req: Request) {
     },
     relations: {
       users_roles: {
-        role: true
+        role: {
+          roles_permissions: {
+            permission: true
+          }
+        }
       }
     }
   });
@@ -134,11 +138,20 @@ async function login(req: Request) {
     maxAge / 1000
   );
 
+  const roles = user.users_roles.map((user_role) => ({
+    id: user_role.role.id,
+    name: user_role.role.role_name,
+    permissions: user_role.role.roles_permissions.map((role_permission) => ({
+      id: role_permission.permission.id,
+      name: role_permission.permission.name
+    }))
+  }));
+
   const data = {
     id: user.id,
     username: user.username,
     email: user.email,
-    roles: user.users_roles.map((user_role) => user_role.role),
+    roles,
     token: {
       type: 'Bearer',
       value: token,

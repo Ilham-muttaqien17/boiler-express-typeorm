@@ -7,6 +7,7 @@ import {
   OneToMany
 } from 'typeorm';
 import { UserRole } from './user_role.entity';
+import { RolePermission } from './role_permission.entity';
 
 @Entity({ name: 'roles' })
 export class Role {
@@ -24,4 +25,7 @@ export class Role {
 
   @OneToMany(() => UserRole, (user_role) => user_role.role)
   users_roles!: UserRole[];
+
+  @OneToMany(() => RolePermission, (role_permission) => role_permission.role)
+  roles_permissions!: RolePermission[];
 }

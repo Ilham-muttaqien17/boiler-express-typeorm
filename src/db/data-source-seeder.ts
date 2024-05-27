@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import env from '../../config/index';
 import { join } from 'path';
 
-const dataSource = new DataSource({
+const dataSourceSeeder = new DataSource({
   type: 'mysql',
   host: env.DB_HOST,
   port: env.DB_PORT,
@@ -15,4 +15,4 @@ const dataSource = new DataSource({
   logging: true
 });
 
-export default dataSource;
+export default dataSourceSeeder;
