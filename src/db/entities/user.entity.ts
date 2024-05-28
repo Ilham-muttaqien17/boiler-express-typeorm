@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { UserRole } from './user_role.entity';
 import bcrypt from 'bcrypt';
+import { Workspace } from './workspace.entity';
 
 @Entity({ name: 'users' })
 export class User implements TUser {
@@ -33,6 +34,9 @@ export class User implements TUser {
 
   @OneToMany(() => UserRole, (user_role) => user_role.user)
   users_roles!: UserRole[];
+
+  @OneToMany(() => Workspace, (workspace) => workspace.user)
+  workspaces!: Workspace[];
 
   @BeforeInsert()
   async hashPassword() {
