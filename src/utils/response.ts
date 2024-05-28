@@ -2,20 +2,19 @@ import { AnyType } from '@src/types';
 import { Response } from 'express';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import ResponseError from '@src/error';
+import { QueryFailedError, TypeORMError } from 'typeorm';
 
 interface SuccessResponse<T extends AnyType = AnyType> {
   statusCode: number;
   result?: T;
   message?: string;
-  pagination?: Record<string, any>;
 }
 
 const HttpResponse = {
-  success: (res: Response, { statusCode, message, result, pagination }: SuccessResponse) => {
+  success: (res: Response, { statusCode, message, result }: SuccessResponse) => {
     return res.status(statusCode).send({
       message,
-      result,
-      pagination
+      result
     });
   },
   error: (res: Response, err: any) => {
@@ -29,6 +28,12 @@ const HttpResponse = {
       return res.status(err.statusCode).send({
         message: err.message,
         errors: err.errors
+      });
+    }
+
+    if (err instanceof QueryFailedError || err instanceof TypeORMError) {
+      return res.status(400).send({
+        message: err.message
       });
     }
 
