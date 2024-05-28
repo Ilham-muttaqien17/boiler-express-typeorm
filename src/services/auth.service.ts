@@ -163,24 +163,24 @@ async function login(req: Request) {
 }
 
 async function getCurrentUser(res: Response) {
-  const user = await userRepository.findOne({
-    where: {
-      id: res.locals.session.id
-    },
-    relations: {
-      users_roles: {
-        role: true
-      }
-    }
-  });
+  const user = res.locals.session;
 
   if (!user) throw new ResponseError(404, 'Data not found, please sign in again');
+
+  const roles = user.users_roles.map((user_role) => ({
+    id: user_role.role.id,
+    name: user_role.role.role_name,
+    permissions: user_role.role.roles_permissions.map((role_permission) => ({
+      id: role_permission.permission.id,
+      name: role_permission.permission.name
+    }))
+  }));
 
   const data = {
     id: user.id,
     username: user.username,
     email: user.email,
-    roles: user.users_roles.map((user_role) => user_role.role)
+    roles
   };
 
   return data;

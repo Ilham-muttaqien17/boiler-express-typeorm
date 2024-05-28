@@ -4,6 +4,9 @@ import jwt from 'jsonwebtoken';
 import env from '@config/index';
 import { useRedisClient } from '@src/utils/redis';
 import { User } from '@src/db/entities/user.entity';
+import dataSource from '@src/db/data-source';
+
+const userRepository = dataSource.getRepository(User);
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -27,7 +30,22 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
       throw new ResponseError(401, 'Unauthorized');
     }
 
-    res.locals.session = JSON.parse(session) as User;
+    const user = await userRepository.findOne({
+      where: {
+        id: userId
+      },
+      relations: {
+        users_roles: {
+          role: {
+            roles_permissions: {
+              permission: true
+            }
+          }
+        }
+      }
+    });
+
+    res.locals.session = user as User;
     next();
   } catch (err: any) {
     next(err);
