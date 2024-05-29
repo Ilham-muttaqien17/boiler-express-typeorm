@@ -3,6 +3,8 @@ import { Response } from 'express';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import ResponseError from '@src/error';
 import { QueryFailedError, TypeORMError } from 'typeorm';
+import { RateLimiterRes } from 'rate-limiter-flexible';
+import { rateLimiterRedis } from './rate-limit';
 
 interface SuccessResponse<T extends AnyType = AnyType> {
   statusCode: number;
@@ -34,6 +36,19 @@ const HttpResponse = {
     if (err instanceof QueryFailedError || err instanceof TypeORMError) {
       return res.status(400).send({
         message: err.message
+      });
+    }
+
+    if (err instanceof RateLimiterRes) {
+      const headers = {
+        'X-RateLimit-Retry-After': err.msBeforeNext / 1000,
+        'X-RateLimit-Limit': rateLimiterRedis.points,
+        'X-RateLimit-Remaining': err.remainingPoints,
+        'X-RateLimit-Reset': new Date(Date.now() + err.msBeforeNext)
+      };
+      res.set(headers);
+      return res.status(429).send({
+        message: 'Too many request, please try again later.'
       });
     }
 
