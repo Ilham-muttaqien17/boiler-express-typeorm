@@ -8,5 +8,6 @@ router.post('/login', auth.login);
 router.post('/secret-registration', auth.register);
 
 router.get('/current-user', authMiddleware, auth.getCurrentUser);
+router.delete('/logout', authMiddleware, auth.logout);
 
 export default router;

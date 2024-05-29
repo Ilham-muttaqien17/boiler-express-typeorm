@@ -18,5 +18,8 @@ export const useRedisClient = {
   getData: async (key: string) => {
     const result = await redisClient.get(key);
     return result;
+  },
+  deleteData: async (key: string) => {
+    return await redisClient.del(key);
   }
 };

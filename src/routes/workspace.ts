@@ -5,11 +5,14 @@ import workspaceController from '@src/controllers/workspace.controller';
 
 const router = express.Router();
 
-router.use(authMiddleware);
-
-router.post('/workspaces', permission(['create-workspace']), workspaceController.create);
-router.get('/workspaces', permission(['read-workspace']), workspaceController.getWorkspace);
-router.put('/workspaces/:id', permission(['update-workspace']), workspaceController.update);
-router.delete('/workspaces/:id', permission(['delete-workspace']), workspaceController.remove);
+router.post('/workspaces', authMiddleware, permission(['create-workspace']), workspaceController.create);
+router.get('/workspaces', authMiddleware, permission(['read-workspace']), workspaceController.getWorkspace);
+router.put('/workspaces/:id', authMiddleware, permission(['update-workspace']), workspaceController.update);
+router.delete(
+  '/workspaces/:id',
+  authMiddleware,
+  permission(['delete-workspace']),
+  workspaceController.remove
+);
 
 export default router;

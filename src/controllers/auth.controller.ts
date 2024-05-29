@@ -39,8 +39,21 @@ async function getCurrentUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function logout(req: Request, res: Response, next: NextFunction) {
+  try {
+    await authService.logout(res);
+    HttpResponse.success(res, {
+      statusCode: 200,
+      message: 'Logout success'
+    });
+  } catch (error: any) {
+    next(error);
+  }
+}
+
 export default {
   login,
   register,
-  getCurrentUser
+  getCurrentUser,
+  logout
 };

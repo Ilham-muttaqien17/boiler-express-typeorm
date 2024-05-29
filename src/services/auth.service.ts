@@ -165,8 +165,6 @@ async function login(req: Request) {
 async function getCurrentUser(res: Response) {
   const user = res.locals.session;
 
-  if (!user) throw new ResponseError(404, 'Data not found, please sign in again');
-
   const roles = user.users_roles.map((user_role) => ({
     id: user_role.role.id,
     name: user_role.role.role_name,
@@ -186,8 +184,15 @@ async function getCurrentUser(res: Response) {
   return data;
 }
 
+async function logout(res: Response) {
+  const { session, loggedInTime } = res.locals;
+  await useRedisClient.deleteData(`user-session:${session.id}:${loggedInTime}`);
+  return true;
+}
+
 export default {
   login,
   register,
-  getCurrentUser
+  getCurrentUser,
+  logout
 };

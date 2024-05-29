@@ -45,7 +45,10 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
       }
     });
 
-    res.locals.session = user as User;
+    if (!user) throw new ResponseError(404, 'Data not found, please sign in again');
+
+    res.locals.session = user;
+    res.locals.loggedInTime = loggedInTime;
     next();
   } catch (err: any) {
     next(err);

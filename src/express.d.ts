@@ -5,6 +5,7 @@ declare global {
     interface Locals {
       [k in string]: any;
       session: User;
+      loggedInTime: string;
     }
   }
 }
