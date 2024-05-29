@@ -1,5 +1,9 @@
+import env from '@config/index';
 import { join } from 'path';
 import pino from 'pino';
+
+const errorPath =
+  env.NODE_ENV === 'production' ? '../../../logs/production.errors.log' : '../../logs/development.errors.log';
 
 const transport = pino.transport({
   targets: [
@@ -11,7 +15,7 @@ const transport = pino.transport({
       level: 'error',
       target: 'pino/file',
       options: {
-        destination: join(__dirname, '../logs/error_log.log'),
+        destination: join(__dirname, errorPath),
         mkdir: true
       }
     }

@@ -10,6 +10,7 @@ import { redisClient } from '@src/utils/redis';
     await dataSource.initialize();
     await redisClient.connect();
     logger.info('Data source has been initialized');
+    logger.info(`Environment: ${env.NODE_ENV}`);
 
     app.listen(env.APP_PORT, () => {
       logger.info(`App is running on port ${env.APP_PORT}`);

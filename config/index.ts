@@ -36,7 +36,7 @@ const env: AppEnv = {
   DB_NAME: String(dotenv.parsed?.DB_NAME),
   APP_HOST: String(dotenv.parsed?.APP_HOST),
   APP_PORT: parseInt(String(dotenv.parsed?.APP_PORT), 10) || 3300,
-  NODE_ENV: String(dotenv.parsed?.NODE_ENV ?? 'dev'),
+  NODE_ENV: String(process.env.NODE_ENV ?? dotenv.parsed?.NODE_ENV ?? 'development'),
   JWT_SECRET: String(dotenv.parsed?.JWT_SECRET),
   REDIS_HOST: String(dotenv.parsed?.REDIS_HOST),
   REDIS_PORT: parseInt(String(dotenv.parsed?.REDIS_PORT), 10) || 6379,
