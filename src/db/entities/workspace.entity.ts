@@ -5,10 +5,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
 import { User } from './user.entity';
+import { Store } from './store.entity';
 
 @Entity({ name: 'workspaces' })
 export class Workspace implements TWorkspace {
@@ -27,4 +29,7 @@ export class Workspace implements TWorkspace {
   @ManyToOne(() => User, (user) => user.workspaces, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user!: User;
+
+  @OneToMany(() => Store, (store) => store.workspace)
+  stores!: Store[];
 }
