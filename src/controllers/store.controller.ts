@@ -17,10 +17,10 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
 async function getStores(req: Request, res: Response, next: NextFunction) {
   try {
-    const result = await storeService.getList(req, res);
+    const { data } = await storeService.getList(req, res);
     HttpResponse.success(res, {
       statusCode: 200,
-      result
+      result: data
     });
   } catch (error: any) {
     next(error);
