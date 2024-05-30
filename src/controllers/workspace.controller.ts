@@ -17,10 +17,22 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
 async function getWorkspace(req: Request, res: Response, next: NextFunction) {
   try {
-    const { data } = await workspaceService.getUserWorkspace(req, res);
+    const { data } = await workspaceService.getList(req, res);
     HttpResponse.success(res, {
       statusCode: 200,
       result: data
+    });
+  } catch (error: any) {
+    next(error);
+  }
+}
+
+async function getDetailWorkspace(req: Request, res: Response, next: NextFunction) {
+  try {
+    const result = await workspaceService.getDetail(req, res);
+    HttpResponse.success(res, {
+      statusCode: 200,
+      result
     });
   } catch (error: any) {
     next(error);
@@ -54,6 +66,7 @@ async function remove(req: Request, res: Response, next: NextFunction) {
 export default {
   create,
   getWorkspace,
+  getDetailWorkspace,
   update,
   remove
 };

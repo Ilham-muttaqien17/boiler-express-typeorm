@@ -34,7 +34,7 @@ async function store(req: Request, res: Response) {
   return data;
 }
 
-async function getUserWorkspace(req: Request, res: Response) {
+async function getList(req: Request, res: Response) {
   const { page, limit, offset, col, direction } = buildPaginationParams(req);
   const user = res.locals.session;
 
@@ -61,6 +61,24 @@ async function getUserWorkspace(req: Request, res: Response) {
   return {
     data
   };
+}
+
+async function getDetail(req: Request, res: Response) {
+  const workspace = await workspaceRepository.findOne({
+    relations: {
+      stores: true
+    },
+    where: {
+      id: parseInt(req.params.id, 10),
+      user: {
+        id: res.locals.session.id
+      }
+    }
+  });
+
+  if (!workspace) throw new ResponseError(404, 'Workspace is not found');
+
+  return workspace;
 }
 
 async function update(req: Request, res: Response) {
@@ -104,7 +122,8 @@ async function destroy(req: Request, res: Response) {
 
 export default {
   store,
-  getUserWorkspace,
+  getList,
+  getDetail,
   update,
   destroy
 };
