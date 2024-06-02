@@ -35,15 +35,16 @@ async function store(req: Request, res: Response) {
 }
 
 async function getList(req: Request, res: Response) {
-  const { page, limit, offset, col, direction } = buildPaginationParams(req);
+  const { page, limit, offset, col, direction, search } = buildPaginationParams(req);
   const user = res.locals.session;
 
   const [workspaces, count] = await workspaceRepository
     .createQueryBuilder('workspace')
-    .where('workspace.user_id = :id', { id: user.id })
+    .where('workspace.user_id = :id AND workspace.name LIKE :name', { id: user.id, name: `%${search}%` })
     .orderBy(col, direction)
     .limit(limit)
     .offset(offset)
+    .cache(3000)
     .getManyAndCount();
 
   const data = {

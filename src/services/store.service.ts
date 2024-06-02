@@ -52,15 +52,16 @@ async function create(req: Request, res: Response) {
 }
 
 async function getList(req: Request, res: Response) {
-  const { page, limit, offset, col, direction } = buildPaginationParams(req);
+  const { page, limit, offset, col, direction, search } = buildPaginationParams(req);
   const workspace = await getWorkspace(parseInt(req.params.workspace_id), res.locals.session.id);
 
   const [stores, count] = await storeRepository
     .createQueryBuilder('store')
-    .where('store.workspace_id = :id', { id: workspace.id })
+    .where('store.workspace_id = :id AND store.name LIKE :name', { id: workspace.id, name: `%${search}%` })
     .orderBy(col, direction)
     .limit(limit)
     .offset(offset)
+    .cache(3000)
     .getManyAndCount();
 
   const data = {
