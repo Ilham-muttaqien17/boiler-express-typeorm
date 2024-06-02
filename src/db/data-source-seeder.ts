@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import env from '../../config/index';
+import env from '@config/index';
 import { join } from 'path';
 
 const dataSourceSeeder = new DataSource({

@@ -10,15 +10,15 @@
     "start": "NODE_ENV=production node -r module-alias/register ./dist/main.js",
     "lint": "eslint . --ext=.ts",
     "commitlint": "commitlint --edit",
-    "entity:create": "ts-node ./node_modules/.bin/typeorm entity:create",
-    "migration:create": "ts-node ./node_modules/.bin/typeorm migration:create",
-    "migration:generate": "ts-node ./node_modules/.bin/typeorm migration:generate --pretty -d ./src/db/data-source.ts",
-    "migration:run": "ts-node ./node_modules/.bin/typeorm migration:run -d ./src/db/data-source.ts",
-    "migration:revert": "ts-node ./node_modules/.bin/typeorm migration:revert -d ./src/db/data-source.ts",
-    "migration:show": "ts-node ./node_modules/.bin/typeorm migration:show -d ./src/db/data-source.ts",
-    "seed:create": "ts-node ./node_modules/.bin/typeorm migration:create",
-    "seed:run": "ts-node ./node_modules/.bin/typeorm migration:run -d ./src/db/data-source-seeder.ts",
-    "seed:revert": "ts-node ./node_modules/.bin/typeorm migration:revert -d ./src/db/data-source-seeder.ts"
+    "entity:create": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm entity:create",
+    "migration:create": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:create",
+    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:generate --pretty -d ./src/db/data-source.ts",
+    "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:run -d ./src/db/data-source.ts",
+    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:revert -d ./src/db/data-source.ts",
+    "migration:show": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:show -d ./src/db/data-source.ts",
+    "seed:create": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:create",
+    "seed:run": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:run -d ./src/db/data-source-seeder.ts",
+    "seed:revert": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:revert -d ./src/db/data-source-seeder.ts"
   },
   "_moduleAliases": {
     "@src": "dist/src",
@@ -71,6 +71,7 @@
     "rimraf": "^5.0.7",
     "simple-git-hooks": "^2.11.1",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.10.5",
     "typescript": "^5.4.5"
   },

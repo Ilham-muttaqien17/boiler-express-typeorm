@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
-import env from '../../config/index';
+import env from '@config/index';
 import { join } from 'path';
+import { redisOptions } from '@src/utils/redis';
 
 const dataSource = new DataSource({
   type: 'mysql',
@@ -12,6 +13,10 @@ const dataSource = new DataSource({
   entities: [join(__dirname, 'entities', '**', '*.entity.{ts,js}')],
   migrations: [join(__dirname, 'migrations', '**', '*.{ts,js}')],
   migrationsTableName: 'migrations',
+  cache: {
+    type: 'redis',
+    options: redisOptions
+  },
   logging: true
 });
 
