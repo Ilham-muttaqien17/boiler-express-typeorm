@@ -14,7 +14,7 @@ const dataSource = new DataSource({
   migrations: [join(__dirname, 'migrations', '**', '*.{ts,js}')],
   migrationsTableName: 'migrations',
   cache: {
-    type: 'redis',
+    type: 'ioredis',
     options: redisOptions
   },
   logging: true

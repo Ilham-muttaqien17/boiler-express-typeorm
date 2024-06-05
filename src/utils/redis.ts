@@ -1,31 +1,20 @@
 import env from '@config/index';
-import { createClient, type RedisClientOptions } from 'redis';
+import { Redis, RedisOptions } from 'ioredis';
 
-export const redisOptions: RedisClientOptions = {
-  socket: {
-    host: env.REDIS_HOST,
-    port: env.REDIS_PORT
-  },
+export const redisOptions: RedisOptions = {
+  host: env.REDIS_HOST,
+  port: env.REDIS_PORT,
   username: env.REDIS_USERNAME,
-  password: env.REDIS_PASSWORD
+  password: env.REDIS_PASSWORD,
+  enableOfflineQueue: false
 };
 
-const createRedisClient = (opts: RedisClientOptions) => {
-  const client = createClient(opts);
-
-  client.on('error', (err) => {
-    console.error(`Redis client error: ${err}`);
-  });
-
-  return client;
-};
-
-export const redisClient = createRedisClient(redisOptions);
+export const redisClient = new Redis(redisOptions);
 
 export const useRedisClient = {
   setData: async (key: string, value: any, ex?: number) => {
-    const opts = ex ? { EX: ex } : {};
-    await redisClient.set(key, value, opts);
+    if (ex) return await redisClient.set(key, value, 'EX', ex);
+    await redisClient.set(key, value);
   },
   getData: async (key: string) => {
     const result = await redisClient.get(key);

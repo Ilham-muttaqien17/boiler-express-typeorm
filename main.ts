@@ -8,7 +8,6 @@ import { redisClient } from '@src/utils/redis';
 (async () => {
   try {
     await dataSource.initialize();
-    await redisClient.connect();
     logger.info('Data source has been initialized');
     logger.info(`Environment: ${env.NODE_ENV}`);
 
@@ -17,6 +16,6 @@ import { redisClient } from '@src/utils/redis';
     });
   } catch (err: any) {
     logger.error(err);
-    await redisClient.disconnect();
+    redisClient.disconnect();
   }
 })();
