@@ -1,4 +1,4 @@
-import { TStore } from '@src/types/store';
+import type { TStore } from '@src/types/store';
 import {
   Column,
   CreateDateColumn,

@@ -1,6 +1,6 @@
 import storeService from '@src/services/store.service';
 import HttpResponse from '@src/utils/response';
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
 async function create(req: Request, res: Response, next: NextFunction) {
   try {

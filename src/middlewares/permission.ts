@@ -1,7 +1,7 @@
 import ResponseError from '@src/error';
-import { TPermission } from '@src/types/permission';
+import type { TPermission } from '@src/types/permission';
 import { hasPermission } from '@src/utils/permission';
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
 function permission(permissions: TPermission[]) {
   return async (req: Request, res: Response, next: NextFunction) => {

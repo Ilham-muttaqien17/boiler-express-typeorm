@@ -1,5 +1,5 @@
 import HttpResponse from '@src/utils/response';
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import workspaceService from '@src/services/workspace.service';
 
 async function create(req: Request, res: Response, next: NextFunction) {

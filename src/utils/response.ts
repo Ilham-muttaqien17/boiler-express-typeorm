@@ -1,10 +1,11 @@
-import { AnyType } from '@src/types';
-import { Response } from 'express';
+import type { AnyType } from '@src/types';
+import type { Response } from 'express';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import ResponseError from '@src/error';
 import { QueryFailedError, TypeORMError } from 'typeorm';
 import { RateLimiterRes } from 'rate-limiter-flexible';
 import { rateLimiterRedis } from './rate-limit';
+import env from '@config/index';
 
 interface SuccessResponse<T extends AnyType = AnyType> {
   statusCode: number;
@@ -52,8 +53,17 @@ const HttpResponse = {
       });
     }
 
-    return res.status(err.statusCode).send({
-      message: err.message
+    if (
+      (err instanceof QueryFailedError || err instanceof TypeORMError || err instanceof TypeError) &&
+      env.NODE_ENV === 'development'
+    ) {
+      return res.status(500).send({
+        message: err.message
+      });
+    }
+
+    return res.status(500).send({
+      message: 'Internal server error, please contact developer!'
     });
   }
 };

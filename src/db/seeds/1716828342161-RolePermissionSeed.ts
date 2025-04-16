@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 import dataSourceSeeder from '../data-source-seeder';
 import { Role } from '../entities/role.entity';
 import { Permission } from '../entities/permission.entity';
@@ -37,7 +37,7 @@ export class RolePermissionSeed1716828342161 implements MigrationInterface {
       await rolePermissionRepository.insert(arrRolePermission);
 
       await queryRunner.commitTransaction();
-    } catch (error) {
+    } catch {
       await queryRunner.rollbackTransaction();
     }
   }
@@ -62,7 +62,7 @@ export class RolePermissionSeed1716828342161 implements MigrationInterface {
       await rolePermissionRepository.remove(rolePermission);
 
       await queryRunner.commitTransaction();
-    } catch (error) {
+    } catch {
       await queryRunner.rollbackTransaction();
     }
   }

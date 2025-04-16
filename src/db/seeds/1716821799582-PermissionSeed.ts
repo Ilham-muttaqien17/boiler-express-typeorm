@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 import { Permission } from '../entities/permission.entity';
 import dataSourceSeeder from '../data-source-seeder';
 import { PERMISSIONS } from '../../types/permission';

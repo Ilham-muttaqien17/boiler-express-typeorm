@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import type { Request, Response } from 'express';
 import { z } from 'zod';
-import { TUser } from '@src/types/user';
+import type { TUser } from '@src/types/user';
 import { useValidator } from '@src/utils/validator';
 import dataSource from '@src/db/data-source';
 import { User } from '@src/db/entities/user.entity';

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddWorkspaceTable1716912403510 implements MigrationInterface {
   name = 'AddWorkspaceTable1716912403510';

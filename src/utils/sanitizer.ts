@@ -30,7 +30,7 @@ const sanitize = (data: any): any => {
       if (typeof item === 'string') {
         data[key] = sanitize(item);
       } else if (Array.isArray(item) || typeof item === 'object') {
-        data[key] = sanitize(item);
+        data[key] = item ? sanitize(item) : item;
       }
     });
   }

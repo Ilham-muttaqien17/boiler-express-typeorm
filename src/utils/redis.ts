@@ -1,5 +1,5 @@
 import env from '@config/index';
-import { Redis, RedisOptions } from 'ioredis';
+import { Redis, type RedisOptions } from 'ioredis';
 
 export const redisOptions: RedisOptions = {
   host: env.REDIS_HOST,

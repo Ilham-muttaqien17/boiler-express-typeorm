@@ -6,7 +6,7 @@ import {
   Column,
   OneToMany
 } from 'typeorm';
-import { TPermission } from '@src/types/permission';
+import type { TPermission } from '@src/types/permission';
 import { RolePermission } from './role_permission.entity';
 
 @Entity({ name: 'permissions' })

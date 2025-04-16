@@ -1,4 +1,4 @@
-import { MigrationInterface } from 'typeorm';
+import type { MigrationInterface } from 'typeorm';
 import { Role } from '../entities/role.entity';
 import dataSourceSeeder from '../data-source-seeder';
 

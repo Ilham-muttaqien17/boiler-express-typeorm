@@ -1,4 +1,4 @@
-import { TPermission } from '@src/types/permission';
+import type { TPermission } from '@src/types/permission';
 
 /**
  * Check user resource permission

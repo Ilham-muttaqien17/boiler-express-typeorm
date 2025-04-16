@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import sanitize from '@src/utils/sanitizer';
 
 const target = ['body', 'params', 'headers', 'query'] as const;

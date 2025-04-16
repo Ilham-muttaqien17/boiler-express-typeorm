@@ -1,4 +1,4 @@
-import { TUser } from '@src/types/user';
+import type { TUser } from '@src/types/user';
 import {
   Entity,
   Column,

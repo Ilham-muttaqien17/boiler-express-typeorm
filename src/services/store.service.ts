@@ -2,10 +2,10 @@ import dataSource from '@src/db/data-source';
 import { Store } from '@src/db/entities/store.entity';
 import { Workspace } from '@src/db/entities/workspace.entity';
 import ResponseError from '@src/error';
-import { TStore } from '@src/types/store';
+import type { TStore } from '@src/types/store';
 import { buildPaginationParams } from '@src/utils/pagination';
 import { useValidator } from '@src/utils/validator';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { z } from 'zod';
 
 const storeRepository = dataSource.getRepository(Store);

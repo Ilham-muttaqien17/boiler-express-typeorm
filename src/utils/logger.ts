@@ -1,6 +1,6 @@
 import env from '@config/index';
 import { join } from 'path';
-import pino from 'pino';
+import pino, { type TransportPipelineOptions } from 'pino';
 
 const transport = pino.transport({
   targets: [
@@ -11,13 +11,16 @@ const transport = pino.transport({
     env.NODE_ENV === 'production'
       ? {
           level: 'error',
-          target: 'pino/file',
+          target: 'pino-roll',
           options: {
-            destination: join(process.cwd(), '/logs/error.log'),
+            file: join(process.cwd(), '/logs/error'),
+            frequency: 'daily',
+            extension: '.log',
+            dateFormat: 'yyyy-MM-dd',
             mkdir: true
           }
         }
-      : { level: 'error', target: 'pino-pretty' }
+      : ({} as TransportPipelineOptions)
   ]
 });
 

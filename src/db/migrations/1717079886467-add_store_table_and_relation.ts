@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddStoreTableAndRelation1717079886467 implements MigrationInterface {
   name = 'AddStoreTableAndRelation1717079886467';

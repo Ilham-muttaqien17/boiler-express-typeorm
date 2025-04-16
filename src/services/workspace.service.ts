@@ -1,10 +1,10 @@
 import dataSource from '@src/db/data-source';
 import { Workspace } from '@src/db/entities/workspace.entity';
 import ResponseError from '@src/error';
-import { TWorkspace } from '@src/types/workspace';
+import type { TWorkspace } from '@src/types/workspace';
 import { buildPaginationParams } from '@src/utils/pagination';
 import { useValidator } from '@src/utils/validator';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { z } from 'zod';
 
 const workspaceRepository = dataSource.getRepository(Workspace);

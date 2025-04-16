@@ -1,4 +1,4 @@
-import { TWorkspace } from '@src/types/workspace';
+import type { TWorkspace } from '@src/types/workspace';
 import {
   Column,
   CreateDateColumn,

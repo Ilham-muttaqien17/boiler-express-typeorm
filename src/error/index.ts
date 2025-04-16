@@ -1,4 +1,4 @@
-import { Nullable } from '@src/types';
+import type { Nullable } from '@src/types';
 
 interface FormError {
   [k: string]: string[];

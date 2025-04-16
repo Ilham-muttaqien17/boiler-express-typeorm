@@ -1,7 +1,7 @@
 import multer from 'multer';
 import fs from 'fs';
 import ResponseError from '@src/error';
-import { MIME_TYPE, Nullable } from '@src/types';
+import type { MIME_TYPE, Nullable } from '@src/types';
 
 /* Multer storage configuration */
 const storage = multer.diskStorage({

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 import dataSourceSeeder from '../data-source-seeder';
 import { User } from '../entities/user.entity';
 import { Role } from '../entities/role.entity';
@@ -32,7 +32,7 @@ export class UserSeed1716456757093 implements MigrationInterface {
       await userRoleRepository.save(user_role);
 
       await queryRunner.commitTransaction();
-    } catch (error) {
+    } catch {
       await queryRunner.rollbackTransaction();
     }
   }
