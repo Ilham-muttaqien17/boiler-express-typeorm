@@ -2,7 +2,6 @@ import env from '@config/index';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import type { Request, Response } from 'express';
-import { z } from 'zod';
 import type { TUser } from '@src/types/user';
 import { useValidator } from '@src/utils/validator';
 import dataSource from '@src/db/data-source';
@@ -12,44 +11,16 @@ import { Role } from '@src/db/entities/role.entity';
 import { UserRole } from '@src/db/entities/user_role.entity';
 import { omit } from '@src/utils/helpers';
 import { useRedisClient } from '@src/utils/redis';
-
-const PASSWORD_REGEX = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])');
-const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+import { loginSchema, registerUserSchema } from '@src/schema/auth.schema';
 
 const userRepository = dataSource.getRepository(User);
 const roleRepository = dataSource.getRepository(Role);
 const userRoleRepository = dataSource.getRepository(UserRole);
 
-const loginValidation = z.object<Record<keyof Omit<TUser, 'username'>, any>>({
-  email: z
-    .string()
-    .trim()
-    .min(1, 'Is required')
-    .refine((val) => EMAIL_REGEX.test(val), {
-      message: 'Is not valid format'
-    }),
-  password: z.string().min(1, 'Is required')
-});
-
-const storeValidation = z.object<Record<keyof TUser, any>>({
-  email: z
-    .string()
-    .trim()
-    .min(1, 'Is required')
-    .refine((val) => EMAIL_REGEX.test(val), {
-      message: 'Is not valid format'
-    }),
-  password: z
-    .string()
-    .min(8)
-    .refine((val) => PASSWORD_REGEX.test(val), 'At least contain lower char, upper char & number'),
-  username: z.string().trim().min(1, 'Is required')
-});
-
 async function register(req: Request) {
   const parsedBody = useValidator<TUser>({
     data: req.body,
-    schema: storeValidation
+    schema: registerUserSchema
   });
 
   const existingUser = await userRepository.findOne({
@@ -101,7 +72,7 @@ async function register(req: Request) {
 async function login(req: Request) {
   const parsedBody = useValidator<Omit<TUser, 'username'>>({
     data: req.body,
-    schema: loginValidation
+    schema: loginSchema
   });
 
   const user = await userRepository.findOne({

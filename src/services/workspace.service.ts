@@ -1,22 +1,18 @@
 import dataSource from '@src/db/data-source';
 import { Workspace } from '@src/db/entities/workspace.entity';
 import ResponseError from '@src/error';
+import { workspaceSchema } from '@src/schema/workspace.schema';
 import type { TWorkspace } from '@src/types/workspace';
 import { buildPaginationParams } from '@src/utils/pagination';
 import { useValidator } from '@src/utils/validator';
 import type { Request, Response } from 'express';
-import { z } from 'zod';
 
 const workspaceRepository = dataSource.getRepository(Workspace);
-
-const storeValidation = z.object<Record<keyof TWorkspace, any>>({
-  name: z.string().trim().min(1, 'Is required')
-});
 
 async function store(req: Request, res: Response) {
   const parsedBody = useValidator<TWorkspace>({
     data: req.body,
-    schema: storeValidation
+    schema: workspaceSchema
   });
 
   const workspace = new Workspace();
@@ -85,7 +81,7 @@ async function getDetail(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   const parsedBody = useValidator<TWorkspace>({
     data: req.body,
-    schema: storeValidation
+    schema: workspaceSchema
   });
   const user = res.locals.session;
 
