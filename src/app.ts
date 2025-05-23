@@ -11,6 +11,8 @@ import compression from 'compression';
 import { useDayjs } from '@src/utils/dayjs';
 import requestIp from 'request-ip';
 import requestId from '@src/middlewares/request-id';
+import swaggerUi from 'swagger-ui-express';
+import { openApiDoc } from '@docs/openapi';
 
 const app = express();
 
@@ -37,6 +39,9 @@ app.use(helmet());
 
 /* Sanitize request data */
 app.use(sanitizer);
+
+/* OpenAPI docs route */
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDoc));
 
 /* Configure CORS */
 app.use(

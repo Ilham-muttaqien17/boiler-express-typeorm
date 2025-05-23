@@ -19,7 +19,7 @@ export const toArray = <T extends AnyType = AnyType>(val: any, isAssign: boolean
 };
 
 /**
- * Remove properties form object
+ * Remove properties from object
  * @param source - Source data in object
  * @param keys - Array of keys wants to delete
  * @returns Object
@@ -27,6 +27,22 @@ export const toArray = <T extends AnyType = AnyType>(val: any, isAssign: boolean
 export function omit<T extends Record<string, any>>(source: Record<string, any>, keys: (keyof T)[]) {
   return Object.keys(source).reduce((prev: Record<string, any>, curr) => {
     if (keys.indexOf(curr) === -1) {
+      prev[curr] = source[curr];
+    }
+
+    return prev;
+  }, {}) as T;
+}
+
+/**
+ * Pick specific properties from object
+ * @param source - Source data in object
+ * @param key - Array of keys wants to delete
+ * @returns Object
+ */
+export function pick<T extends Record<string, any>>(source: Record<string, any>, keys: (keyof T)[]) {
+  return Object.keys(source).reduce((prev: Record<string, any>, curr) => {
+    if (keys.indexOf(curr) !== -1) {
       prev[curr] = source[curr];
     }
 
