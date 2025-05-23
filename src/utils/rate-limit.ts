@@ -3,7 +3,7 @@ import { type IRateLimiterRedisOptions, RateLimiterRedis } from 'rate-limiter-fl
 
 const options: IRateLimiterRedisOptions = {
   storeClient: redisClient,
-  points: 15, // limit each ip for 15 request per 1 minute
+  points: 60, // limit each ip for 60 request per 1 minute
   duration: 60,
   keyPrefix: 'rate-limit'
 };
