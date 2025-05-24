@@ -1,5 +1,5 @@
 import { type OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
-import { paginationSchema } from '@src/schema/pagination.schema';
+import { paginationQuerySchema, paginationResultSchema } from '@src/schema/pagination.schema';
 import { workspaceSchema } from '@src/schema/workspace.schema';
 import z from 'zod';
 import { openAPIDefaultResponse } from '../default_response';
@@ -15,7 +15,7 @@ export const registerWorkspacePaths = (registry: OpenAPIRegistry) => {
     path: '/api/workspaces',
     tags: ['Workspace'],
     request: {
-      query: paginationSchema
+      query: paginationQuerySchema
     },
     security: [{ bearerAuth: [] }],
     responses: {
@@ -23,15 +23,7 @@ export const registerWorkspacePaths = (registry: OpenAPIRegistry) => {
         description: 'List of Workspaces',
         content: {
           'application/json': {
-            example: {
-              result: {
-                page: 1,
-                limit: 10,
-                total: 2,
-                rows: []
-              }
-            },
-            schema: {}
+            schema: paginationResultSchema
           }
         }
       },
