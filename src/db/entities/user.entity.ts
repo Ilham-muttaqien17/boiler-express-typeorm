@@ -6,7 +6,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  BeforeInsert
+  BeforeInsert,
+  BeforeUpdate
 } from 'typeorm';
 import { UserRole } from './user_role.entity';
 import bcrypt from 'bcrypt';
@@ -39,8 +40,11 @@ export class User implements TUser {
   workspaces!: Workspace[];
 
   @BeforeInsert()
+  @BeforeUpdate()
   async hashPassword() {
-    const salt = await bcrypt.genSalt();
-    this.password = await bcrypt.hash(this.password, salt);
+    if (this.password && !this.password.startsWith('$2b$')) {
+      const salt = await bcrypt.genSalt();
+      this.password = await bcrypt.hash(this.password, salt);
+    }
   }
 }
