@@ -10,7 +10,7 @@ const userRoleRepository = dataSourceSeeder.getRepository(UserRole);
 
 export class UserSeed1716456757093 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    queryRunner.startTransaction();
+    await queryRunner.startTransaction();
     try {
       const role = await roleRepository.findOne({
         where: {
